@@ -1,5 +1,14 @@
 import './App.css';
 import {useDispatch, useSelector} from "react-redux";
+import {
+    ADD_CUSTOMER,
+    addCustomerAction,
+    addManyCustomersAction,
+    REMOVE_CUSTOMERS,
+    removeCustomerAction
+} from "./store/customerReducer";
+import {ADD_CASH, addCashAction, GET_CASH, getCashAction} from "./store/cashReducer";
+import {useEffect} from "react";
 
 function App() {
     const dispatch = useDispatch()
@@ -7,11 +16,27 @@ function App() {
     const customers = useSelector(state => state.customers.customers)
 
     const addCash = (cash) => {
-        dispatch({type: "ADD_CASH", payload: cash})
+        dispatch(addCashAction(cash))
     }
 
     const getCash = (cash) => {
-        dispatch({type: "GET_CASH", payload: cash})
+        dispatch(getCashAction(cash))
+    }
+
+    const addCustomer = (name) => {
+        const customer = {
+            name,
+            id: Date.now()
+        }
+        dispatch(addCustomerAction(customer))
+    }
+
+    function removeCustomer(customer) {
+        dispatch(removeCustomerAction(customer))
+    }
+
+    const useEffect = () => {
+        addManyCustomersAction();
     }
 
     return (
@@ -20,10 +45,14 @@ function App() {
             <div style={{display: "flex"}}>
                 <button onClick={() => addCash(Number(prompt()))}>Пополнить счет</button>
                 <button onClick={() => getCash(Number(prompt()))}>Снять со счета</button>
+                <button onClick={() => addCustomer(prompt())}>Добавить пользователя</button>
+                <button onClick={() => removeCustomer()}>Удалить пользователя</button>
             </div>
             {customers.length > 0 ?
                 <div>
-
+                    {customers.map(customer =>
+                        <div onClick={() => removeCustomer(customer)}>{customer.name}</div>
+                    )}
                 </div>
                 :
                 <div>
