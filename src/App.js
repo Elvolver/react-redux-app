@@ -9,6 +9,7 @@ import {
 } from "./store/customerReducer";
 import {ADD_CASH, addCashAction, GET_CASH, getCashAction} from "./store/cashReducer";
 import {useEffect} from "react";
+import {fetchCustomers} from "./asyncActions/customers";
 
 function App() {
     const dispatch = useDispatch()
@@ -46,7 +47,7 @@ function App() {
                 <button onClick={() => addCash(Number(prompt()))}>Пополнить счет</button>
                 <button onClick={() => getCash(Number(prompt()))}>Снять со счета</button>
                 <button onClick={() => addCustomer(prompt())}>Добавить пользователя</button>
-                <button onClick={() => removeCustomer()}>Удалить пользователя</button>
+                <button onClick={() => dispatch(fetchCustomers())}>Получить пользователей</button>
             </div>
             {customers.length > 0 ?
                 <div>
